@@ -8,23 +8,30 @@
             [correo.email :as email]
             [correo.middleware :refer [wrap-body-keywordize-keys]]))
 
-(def config (read-string (slurp "config/email.edn")))
+(defn read-config
+  [file]
+  (read-string (slurp file)))
 
-(println "Using config:" (email/description config))
+(defn app-routes
+  [config]
+  (routes
+    (GET "/"
+      []
+      "Hello Email")
+    (POST "/send"
+      {message :body}
+      (println "Sending message to" (:to message))
+      (response (email/send config message)))
+    (route/not-found "Not Found")))
 
-(defroutes app-routes
-  (GET "/"
-    []
-    "Hello Email")
-  (POST "/send"
-    {message :body}
-    (println "Sending message to" (:to message))
-    (response (email/send config message)))
-  (route/not-found "Not Found"))
-
-(def app
-  (-> app-routes
-    (wrap-body-keywordize-keys)
-    (wrap-json-body)
-    (wrap-json-response)
+(defn app
+  [config]
+  (-> config
+    app-routes
+    wrap-body-keywordize-keys
+    wrap-json-body
+    wrap-json-response
     (wrap-defaults api-defaults)))
+
+(def app-with-default-config
+  (app "config/email.edn"))

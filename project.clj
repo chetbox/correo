@@ -6,9 +6,12 @@
                  [compojure "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [ring/ring-json "0.4.0"]
-                 [com.draines/postal "1.11.3"]]
+                 [com.draines/postal "1.11.3"]
+                 [http-kit "2.1.18"]]
+  :main correo.core
+  :aot [correo.core]
   :plugins [[lein-ring "0.9.7"]]
-  :ring {:handler correo.handler/app}
+  :ring {:handler correo.handler/app-with-default-config}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring/ring-mock "0.3.0"]]}})

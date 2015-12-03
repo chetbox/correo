@@ -5,10 +5,10 @@
 
 (deftest test-app
   (testing "/"
-    (let [response (app (mock/request :get "/"))]
+    (let [response (app-with-default-config (mock/request :get "/"))]
       (is (= (:status response) 200))
       (is (= (:body response) "Hello Email"))))
 
   (testing "not-found route"
-    (let [response (app (mock/request :get "/invalid"))]
+    (let [response (app-with-default-config (mock/request :get "/invalid"))]
       (is (= (:status response) 404)))))
