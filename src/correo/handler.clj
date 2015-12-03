@@ -8,7 +8,7 @@
             [correo.email :as email]
             [correo.middleware :refer [wrap-body-keywordize-keys]]))
 
-(def config (read-string (slurp "config.edn")))
+(def config (read-string (slurp "config/email.edn")))
 
 (println "Using config:" (email/description config))
 
