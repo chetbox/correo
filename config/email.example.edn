@@ -3,4 +3,5 @@
           :pass "mypassword"
           :ssl true}
  :identifier "example.com"
- :from "Hello Example <hello@example.com>"}
+ :from "Hello Example <hello@example.com>"
+ :buffer-length 10}

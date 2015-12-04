@@ -4,7 +4,6 @@
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
             [ring.util.response :refer [response]]
-            [clojure.pprint :as pprint]
             [correo.email :as email]
             [correo.middleware :refer [wrap-body-keywordize-keys]]))
 
@@ -14,15 +13,16 @@
 
 (defn app-routes
   [config]
-  (routes
-    (GET "/"
-      []
-      "Hello Email")
-    (POST "/send"
-      {message :body}
-      (println "Sending message to" (:to message))
-      (response (email/send config message)))
-    (route/not-found "Not Found")))
+  (let [email-sender (email/sender config)]
+    (routes
+      (GET "/"
+        []
+        "Hello Email")
+      (POST "/send"
+        {message :body}
+        (email/send! email-sender message)
+        (response "ok\n"))
+      (route/not-found "Not Found"))))
 
 (defn app
   [config]
@@ -34,4 +34,4 @@
     (wrap-defaults api-defaults)))
 
 (def app-with-default-config
-  (app "config/email.edn"))
+  (app (read-config "config/email.edn")))

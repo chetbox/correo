@@ -1,19 +1,30 @@
 (ns correo.email
-  (:refer-clojure :exclude [send])
-  (:require [postal.core :as postal]
+  (:require [clojure.core.async :refer [>!! <! chan go]]
+            [postal.core :as postal]
             [postal.support :refer [message-id]]))
 
-(defn description
-  [config]
-  (str (:identifier config) " (" (get-in config [:server :host]) ")"))
-
-(defn send
+(defn -send!
   [config message]
-  {:pre [(:to message)
-         (:subject message)
-         (:body message)]}
-  (postal/send-message
+  (println "Sending:" (:subject message))
+  (time (postal/send-message
     (:server config)
     (merge message
            {:from (:from config)
-            :message-id #(message-id (:identifier config))})))
+            :message-id #(message-id (:identifier config))}))))
+
+(defn send!
+  [channel message]
+  {:pre [(:to message)
+         (:subject message)
+         (:body message)]}
+  [message]
+  (>!! channel message))
+
+(defn sender
+  [config]
+  (let [buffer-size (or (:buffer-length config) 0)
+        channel (chan buffer-size)]
+    (go
+      (while true
+        (-send! config (<! channel))))
+    channel))
