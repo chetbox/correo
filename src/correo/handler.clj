@@ -32,6 +32,3 @@
     wrap-json-body
     wrap-json-response
     (wrap-defaults api-defaults)))
-
-(def app-with-default-config
-  (app (read-config "config/email.edn")))

@@ -12,7 +12,7 @@
   :main correo.core
   :aot [correo.core]
   :plugins [[lein-ring "0.9.7"]]
-  :ring {:handler correo.handler/app-with-default-config}
+  :ring {:handler correo.debug/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring/ring-mock "0.3.0"]]}})
