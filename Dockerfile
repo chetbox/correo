@@ -9,8 +9,9 @@ RUN lein deps
 # Test
 RUN lein test
 
-# Run
-ENV RING_ENV production
-CMD lein ring server-headless 80
-EXPOSE 80
+# Build
+RUN lein uberjar
 
+# Run
+CMD java -jar target/correo-*-standalone.jar config/email.edn 80
+EXPOSE 80
