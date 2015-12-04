@@ -1,4 +1,4 @@
-(defproject correo "1.0.0"
+(defproject correo "1.0.1"
   :description "A simple email sender with an HTTP interface"
   :url "https://github.com/chetbox/correo"
   :min-lein-version "2.0.0"
