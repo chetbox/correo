@@ -10,13 +10,13 @@ You will need [Leiningen][] 2.0.0 or above installed.
 
 ## Configuration
 
-Copy `config.example.edn` to `config.edn` and set it up with your email server details.
+Copy `email.example.edn` to `email.edn` and set it up with your email server details.
 
 ## Running
 
 To start a web server for the application, run:
 
-    lein ring server-headless
+    lein run config/email.edn 3000
 
 ## Sending a message
 
