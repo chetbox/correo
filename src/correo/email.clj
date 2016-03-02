@@ -7,10 +7,11 @@
   [config message]
   (println "Sending:" (:subject message))
   (time (postal/send-message
-    (:server config)
-    (merge message
-           {:from (:from config)
-            :message-id #(message-id (:identifier config))}))))
+          (:server config)
+          (merge
+            message
+            {:from (:from config)
+             :message-id #(message-id (:identifier config))}))))
 
 (defn send!
   [channel message]
